@@ -61,7 +61,7 @@ const HomeScreen = () => {
     <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-md mx-auto px-6 py-6">
+        <div className="mx-auto px-4 py-6 max-w-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
@@ -85,7 +85,7 @@ const HomeScreen = () => {
       </div>
 
       {/* Single unified form */}
-      <div className="max-w-md mx-auto px-6 py-8">
+      <div className="mx-auto px-4 py-8 max-w-lg">
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-6 space-y-8">
           {/* Search */}
           <div className="space-y-4">

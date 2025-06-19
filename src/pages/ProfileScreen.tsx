@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -102,197 +103,190 @@ const ProfileScreen = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-md mx-auto px-6 py-4 flex items-center justify-between">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => navigate('/')}
-            className="p-2"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <div className="text-center">
-            <h1 className="text-lg font-bold text-slate-800">My Library</h1>
-            <p className="text-xs text-slate-500">{userProfile.arrangementsCount} arrangements</p>
+      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40">
+        <div className="mx-auto px-4 py-6 max-w-lg">
+          <div className="flex items-center justify-between">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigate('/')}
+              className="w-10 h-10 p-0 rounded-xl bg-gray-100 hover:bg-gray-200"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <div className="text-center">
+              <h1 className="text-lg font-bold text-gray-900">My Library</h1>
+              <p className="text-sm text-gray-500 font-medium">{userProfile.arrangementsCount} arrangements</p>
+            </div>
+            <div className="w-10" /> {/* Spacer for center alignment */}
           </div>
-          <div className="w-9" /> {/* Spacer for center alignment */}
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-6 py-6 space-y-6">
+      <div className="mx-auto px-4 py-8 space-y-6 max-w-lg">
         {/* Profile Card */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-white" />
-              </div>
-              <div className="flex-1">
-                <CardTitle className="text-lg">{userProfile.name}</CardTitle>
-                <p className="text-sm text-slate-600">{userProfile.email}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <Badge className="bg-gold-100 text-gold-800 text-xs">
-                    {userProfile.subscription}
-                  </Badge>
-                  <span className="text-xs text-slate-500">Since {userProfile.joinDate}</span>
-                </div>
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
+              <User className="w-8 h-8 text-white" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-gray-900">{userProfile.name}</h2>
+              <p className="text-sm text-gray-500 font-medium">{userProfile.email}</p>
+              <div className="flex items-center gap-2 mt-2">
+                <Badge className="bg-gradient-to-r from-gold-100 to-yellow-100 text-gold-800 text-xs font-medium">
+                  {userProfile.subscription}
+                </Badge>
+                <span className="text-xs text-gray-500 font-medium">Since {userProfile.joinDate}</span>
               </div>
             </div>
-          </CardHeader>
-        </Card>
+          </div>
+        </div>
 
         {/* Search and Filters */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Search className="w-5 h-5 text-blue-600" />
-              Find Arrangements
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <Input
-                placeholder="Search by title or composer..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <Search className="w-4 h-4 text-blue-600" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900">Find Arrangements</h3>
+          </div>
+          
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Input
+              placeholder="Search by title or composer..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-12 h-12 rounded-2xl border-gray-200 bg-gray-50 focus:bg-white transition-colors"
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-semibold text-gray-900 mb-2 block">
+                Instrument
+              </label>
+              <Select value={filterInstrument} onValueChange={setFilterInstrument}>
+                <SelectTrigger className="h-12 rounded-2xl border-gray-200 bg-gray-50">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="piano">Piano</SelectItem>
+                  <SelectItem value="violin">Violin</SelectItem>
+                  <SelectItem value="guitar">Guitar</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-medium text-slate-700 mb-1 block">
-                  Instrument
-                </label>
-                <Select value={filterInstrument} onValueChange={setFilterInstrument}>
-                  <SelectTrigger className="h-9">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="piano">Piano</SelectItem>
-                    <SelectItem value="violin">Violin</SelectItem>
-                    <SelectItem value="guitar">Guitar</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="text-sm font-medium text-slate-700 mb-1 block">
-                  Date
-                </label>
-                <Select value={filterDate} onValueChange={setFilterDate}>
-                  <SelectTrigger className="h-9">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All time</SelectItem>
-                    <SelectItem value="week">This week</SelectItem>
-                    <SelectItem value="month">This month</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div>
+              <label className="text-sm font-semibold text-gray-900 mb-2 block">
+                Date
+              </label>
+              <Select value={filterDate} onValueChange={setFilterDate}>
+                <SelectTrigger className="h-12 rounded-2xl border-gray-200 bg-gray-50">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="all">All time</SelectItem>
+                  <SelectItem value="week">This week</SelectItem>
+                  <SelectItem value="month">This month</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Arrangements List */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {filteredArrangements.map((arrangement) => {
             const TargetIcon = getInstrumentIcon(arrangement.targetInstrument);
             const OriginalIcon = getInstrumentIcon(arrangement.originalInstrument);
             
             return (
-              <Card key={arrangement.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-2xl">{arrangement.thumbnail}</span>
-                        <div>
-                          <h3 className="font-medium text-slate-800">{arrangement.title}</h3>
-                          <p className="text-sm text-slate-600">{arrangement.composer}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-3 text-sm text-slate-500 mb-2">
-                        <div className="flex items-center gap-1">
-                          <OriginalIcon className="w-3 h-3" />
-                          <span>{arrangement.originalInstrument}</span>
-                        </div>
-                        <span>→</span>
-                        <div className="flex items-center gap-1">
-                          <TargetIcon className="w-3 h-3" />
-                          <span>{arrangement.targetInstrument}</span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <Badge className={`text-xs ${skillLevelColors[arrangement.skillLevel]}`}>
-                          {arrangement.skillLevel}
-                        </Badge>
-                        <span className="text-xs text-slate-500 flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
-                          {new Date(arrangement.dateCreated).toLocaleDateString()}
-                        </span>
+              <div key={arrangement.id} className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-2xl">{arrangement.thumbnail}</span>
+                      <div>
+                        <h3 className="font-bold text-gray-900 text-lg">{arrangement.title}</h3>
+                        <p className="text-sm text-gray-500 font-medium">{arrangement.composer}</p>
                       </div>
                     </div>
+                    
+                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                      <div className="flex items-center gap-2">
+                        <OriginalIcon className="w-4 h-4" />
+                        <span className="font-medium">{arrangement.originalInstrument}</span>
+                      </div>
+                      <span>→</span>
+                      <div className="flex items-center gap-2">
+                        <TargetIcon className="w-4 h-4" />
+                        <span className="font-medium">{arrangement.targetInstrument}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      <Badge className={`text-xs font-medium ${skillLevelColors[arrangement.skillLevel]}`}>
+                        {arrangement.skillLevel}
+                      </Badge>
+                      <span className="text-xs text-gray-500 flex items-center gap-1 font-medium">
+                        <Calendar className="w-3 h-3" />
+                        {new Date(arrangement.dateCreated).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                  
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" className="flex-1">
-                      <Download className="w-3 h-3 mr-1" />
-                      Download
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
-                      <Edit className="w-3 h-3 mr-1" />
-                      Re-adapt
-                    </Button>
-                    <Button size="sm" variant="outline" className="px-3">
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+                
+                <div className="flex gap-3">
+                  <Button size="sm" variant="outline" className="flex-1 h-12 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold">
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                  <Button size="sm" variant="outline" className="flex-1 h-12 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold">
+                    <Edit className="w-4 h-4 mr-2" />
+                    Re-adapt
+                  </Button>
+                  <Button size="sm" variant="outline" className="px-4 h-12 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white">
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
             );
           })}
         </div>
 
         {filteredArrangements.length === 0 && (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Music className="w-8 h-8 text-slate-400" />
-              </div>
-              <p className="text-slate-600 font-medium">No arrangements found</p>
-              <p className="text-sm text-slate-500">
-                Try adjusting your search or filters
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Music className="w-8 h-8 text-gray-400" />
+            </div>
+            <p className="text-gray-900 font-bold text-lg mb-2">No arrangements found</p>
+            <p className="text-sm text-gray-500 font-medium">
+              Try adjusting your search or filters
+            </p>
+          </div>
         )}
 
-        {/* Settings Card */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Preferences</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Button variant="outline" className="w-full justify-start">
+        {/* Settings */}
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 space-y-4">
+          <h3 className="text-xl font-bold text-gray-900">Preferences</h3>
+          <div className="space-y-3">
+            <Button variant="outline" className="w-full justify-start h-14 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold text-gray-900">
               Account Settings
             </Button>
-            <Button variant="outline" className="w-full justify-start">
+            <Button variant="outline" className="w-full justify-start h-14 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold text-gray-900">
               Subscription Management
             </Button>
-            <Button variant="outline" className="w-full justify-start">
+            <Button variant="outline" className="w-full justify-start h-14 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold text-gray-900">
               Export All Data
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       <BottomNavigation />
