@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Play, Pause, Download, RefreshCw, FileText, Music, Volume2 } from "lucide-react";
+import BottomNavigation from '@/components/BottomNavigation';
 
 const ResultScreen = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const ResultScreen = () => {
   const currentSkillLevel = skillLevels.find(level => level.value === skillLevel);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-md mx-auto px-6 py-4 flex items-center justify-between">
@@ -221,6 +221,8 @@ const ResultScreen = () => {
           </CardContent>
         </Card>
       </div>
+
+      <BottomNavigation />
     </div>
   );
 };

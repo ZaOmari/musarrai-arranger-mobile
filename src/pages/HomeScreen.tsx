@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search, Music, Piano, Guitar, User, Sparkles } from "lucide-react";
+import BottomNavigation from '@/components/BottomNavigation';
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const HomeScreen = () => {
   const canGenerate = originalInstrument && targetInstrument && skillLevel;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-md mx-auto px-6 py-4 flex items-center justify-between">
@@ -214,6 +215,8 @@ const HomeScreen = () => {
           </p>
         )}
       </div>
+
+      <BottomNavigation />
     </div>
   );
 };
