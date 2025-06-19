@@ -4,9 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Music, Piano, Guitar, User, Sparkles, ChevronRight } from "lucide-react";
+import { Search, Music, Piano, Guitar, User, Sparkles } from "lucide-react";
 import BottomNavigation from '@/components/BottomNavigation';
 
 const HomeScreen = () => {
@@ -33,9 +32,9 @@ const HomeScreen = () => {
   ];
 
   const skillLevels = [
-    { value: "beginner", label: "Beginner", color: "bg-green-50 text-green-600 border-green-200" },
-    { value: "intermediate", label: "Intermediate", color: "bg-orange-50 text-orange-600 border-orange-200" },
-    { value: "advanced", label: "Advanced", color: "bg-red-50 text-red-600 border-red-200" },
+    { value: "beginner", label: "Beginner" },
+    { value: "intermediate", label: "Intermediate" },
+    { value: "advanced", label: "Advanced" },
   ];
 
   const filteredLibrary = musicLibrary.filter(piece =>
@@ -85,20 +84,12 @@ const HomeScreen = () => {
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-6 py-8 space-y-8">
-        {/* Search Library */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 pb-4">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <Search className="w-4 h-4 text-blue-600" />
-              </div>
-              <h2 className="text-xl font-bold text-gray-900">Music Library</h2>
-            </div>
-            <p className="text-gray-500 text-sm font-medium">Browse our classical collection</p>
-          </div>
-          
-          <div className="px-6 pb-6 space-y-4">
+      {/* Single unified form */}
+      <div className="max-w-md mx-auto px-6 py-8">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-6 space-y-8">
+          {/* Search */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-gray-900">Find Your Music</h2>
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
@@ -109,33 +100,26 @@ const HomeScreen = () => {
               />
             </div>
             
-            <div className="space-y-3 max-h-48 overflow-y-auto">
-              {filteredLibrary.map((piece) => (
-                <div key={piece.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 text-base">{piece.title}</h4>
-                    <p className="text-sm text-gray-500 font-medium">{piece.composer}</p>
-                  </div>
-                  <div className="flex items-center gap-3">
+            {/* Music library results */}
+            {searchQuery && (
+              <div className="space-y-3 max-h-48 overflow-y-auto">
+                {filteredLibrary.map((piece) => (
+                  <div key={piece.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 text-base">{piece.title}</h4>
+                      <p className="text-sm text-gray-500 font-medium">{piece.composer}</p>
+                    </div>
                     <Badge variant="outline" className="text-xs font-medium bg-white">
                       {piece.difficulty}
                     </Badge>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Instrument Selection */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 pb-4">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Arrangement Settings</h2>
-            <p className="text-gray-500 text-sm font-medium">Configure your musical arrangement</p>
-          </div>
-          
-          <div className="px-6 pb-6 space-y-6">
+          {/* Instruments */}
+          <div className="space-y-4">
             <div>
               <label className="text-base font-semibold text-gray-900 mb-3 block">
                 Original Instrument
@@ -177,52 +161,53 @@ const HomeScreen = () => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
 
-            <div>
-              <label className="text-base font-semibold text-gray-900 mb-3 block">
-                Skill Level
-              </label>
-              <div className="grid grid-cols-1 gap-3">
-                {skillLevels.map((level) => (
-                  <button
-                    key={level.value}
-                    onClick={() => setSkillLevel(level.value)}
-                    className={`p-4 rounded-2xl border-2 transition-all text-left ${
-                      skillLevel === level.value
-                        ? 'border-blue-500 bg-blue-50 shadow-sm'
-                        : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
-                    }`}
-                  >
-                    <div className="font-semibold text-gray-900 text-base">
-                      {level.label}
-                    </div>
-                    <div className="text-sm text-gray-500 mt-1">
-                      {level.value === 'beginner' && 'Perfect for starting out'}
-                      {level.value === 'intermediate' && 'Some experience required'}
-                      {level.value === 'advanced' && 'For skilled musicians'}
-                    </div>
-                  </button>
-                ))}
-              </div>
+          {/* Skill Level */}
+          <div className="space-y-4">
+            <label className="text-base font-semibold text-gray-900 block">
+              Skill Level
+            </label>
+            <div className="grid grid-cols-1 gap-3">
+              {skillLevels.map((level) => (
+                <button
+                  key={level.value}
+                  onClick={() => setSkillLevel(level.value)}
+                  className={`p-4 rounded-2xl border-2 transition-all text-left ${
+                    skillLevel === level.value
+                      ? 'border-blue-500 bg-blue-50 shadow-sm'
+                      : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
+                  }`}
+                >
+                  <div className="font-semibold text-gray-900 text-base">
+                    {level.label}
+                  </div>
+                  <div className="text-sm text-gray-500 mt-1">
+                    {level.value === 'beginner' && 'Perfect for starting out'}
+                    {level.value === 'intermediate' && 'Some experience required'}
+                    {level.value === 'advanced' && 'For skilled musicians'}
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
+
+          {/* Generate Button */}
+          <Button 
+            onClick={handleGenerate}
+            disabled={!canGenerate}
+            className="w-full h-16 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all rounded-2xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Sparkles className="w-6 h-6 mr-3" />
+            Generate Arrangement
+          </Button>
+
+          {!canGenerate && (
+            <p className="text-center text-sm text-gray-500 font-medium">
+              Please select all options to generate your arrangement
+            </p>
+          )}
         </div>
-
-        {/* Generate Button */}
-        <Button 
-          onClick={handleGenerate}
-          disabled={!canGenerate}
-          className="w-full h-16 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all rounded-2xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <Sparkles className="w-6 h-6 mr-3" />
-          Generate Arrangement
-        </Button>
-
-        {!canGenerate && (
-          <p className="text-center text-sm text-gray-500 font-medium">
-            Please select all options to generate your arrangement
-          </p>
-        )}
       </div>
 
       <BottomNavigation />
