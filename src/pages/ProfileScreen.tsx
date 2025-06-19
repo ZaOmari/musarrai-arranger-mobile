@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, User, Download, Edit, Trash2, Search, Filter, Music, Calendar, Piano, Violin } from "lucide-react";
+import { ArrowLeft, User, Download, Edit, Trash2, Search, Filter, Music, Calendar, Piano } from "lucide-react";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
@@ -84,7 +83,7 @@ const ProfileScreen = () => {
   const getInstrumentIcon = (instrument) => {
     switch (instrument.toLowerCase()) {
       case 'piano': return Piano;
-      case 'violin': return Violin;
+      case 'violin': return Music;
       default: return Music;
     }
   };

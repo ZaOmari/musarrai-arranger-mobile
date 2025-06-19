@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Music, Piano, Violin, Guitar, Drums, Trumpet, User, Sparkles } from "lucide-react";
+import { Search, Music, Piano, Guitar, User, Sparkles } from "lucide-react";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -25,10 +24,10 @@ const HomeScreen = () => {
 
   const instruments = [
     { value: "piano", label: "Piano", icon: Piano },
-    { value: "violin", label: "Violin", icon: Violin },
+    { value: "violin", label: "Violin", icon: Music },
     { value: "guitar", label: "Guitar", icon: Guitar },
-    { value: "trumpet", label: "Trumpet", icon: Trumpet },
-    { value: "drums", label: "Drums", icon: Drums },
+    { value: "trumpet", label: "Trumpet", icon: Music },
+    { value: "drums", label: "Drums", icon: Music },
   ];
 
   const skillLevels = [
