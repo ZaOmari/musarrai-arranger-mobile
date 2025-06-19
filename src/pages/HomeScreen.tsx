@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, Music, Piano, Guitar, User, Sparkles } from "lucide-react";
+import { Search, Music, Piano, Guitar, User, Sparkles, ChevronRight } from "lucide-react";
 import BottomNavigation from '@/components/BottomNavigation';
 
 const HomeScreen = () => {
@@ -32,9 +33,9 @@ const HomeScreen = () => {
   ];
 
   const skillLevels = [
-    { value: "beginner", label: "Beginner", color: "bg-green-100 text-green-800" },
-    { value: "intermediate", label: "Intermediate", color: "bg-yellow-100 text-yellow-800" },
-    { value: "advanced", label: "Advanced", color: "bg-red-100 text-red-800" },
+    { value: "beginner", label: "Beginner", color: "bg-green-50 text-green-600 border-green-200" },
+    { value: "intermediate", label: "Intermediate", color: "bg-orange-50 text-orange-600 border-orange-200" },
+    { value: "advanced", label: "Advanced", color: "bg-red-50 text-red-600 border-red-200" },
   ];
 
   const filteredLibrary = musicLibrary.filter(piece =>
@@ -58,94 +59,97 @@ const HomeScreen = () => {
   const canGenerate = originalInstrument && targetInstrument && skillLevel;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-md mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center">
-              <Music className="w-6 h-6 text-white" />
+      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40">
+        <div className="max-w-md mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Music className="w-7 h-7 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">MusArrAI</h1>
+                <p className="text-sm text-gray-500 font-medium">Arrange Your Music</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-800">MusArrAI</h1>
-              <p className="text-xs text-slate-500">Arrange Your Music</p>
-            </div>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => navigate('/profile')}
+              className="w-12 h-12 p-0 rounded-full bg-gray-100 hover:bg-gray-200 transition-all"
+            >
+              <User className="w-6 h-6 text-gray-600" />
+            </Button>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => navigate('/profile')}
-            className="w-10 h-10 p-0 rounded-full"
-          >
-            <User className="w-5 h-5" />
-          </Button>
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-6 py-6 space-y-6">
+      <div className="max-w-md mx-auto px-6 py-8 space-y-8">
         {/* Search Library */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Search className="w-5 h-5 text-blue-600" />
-              Music Library
-            </CardTitle>
-            <CardDescription>
-              Browse and select from our classical collection
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 pb-4">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <Search className="w-4 h-4 text-blue-600" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900">Music Library</h2>
+            </div>
+            <p className="text-gray-500 text-sm font-medium">Browse our classical collection</p>
+          </div>
+          
+          <div className="px-6 pb-6 space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <Input
                 placeholder="Search pieces or composers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-12 h-12 rounded-2xl border-gray-200 bg-gray-50 focus:bg-white transition-colors"
               />
             </div>
             
-            <div className="space-y-2 max-h-48 overflow-y-auto">
+            <div className="space-y-3 max-h-48 overflow-y-auto">
               {filteredLibrary.map((piece) => (
-                <div key={piece.id} className="p-3 border rounded-lg hover:bg-slate-50 transition-colors">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-medium text-slate-800">{piece.title}</h4>
-                      <p className="text-sm text-slate-600">{piece.composer}</p>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
+                <div key={piece.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-gray-900 text-base">{piece.title}</h4>
+                    <p className="text-sm text-gray-500 font-medium">{piece.composer}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge variant="outline" className="text-xs font-medium bg-white">
                       {piece.difficulty}
                     </Badge>
+                    <ChevronRight className="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Instrument Selection */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">Arrangement Settings</CardTitle>
-            <CardDescription>
-              Configure your musical arrangement
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 pb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Arrangement Settings</h2>
+            <p className="text-gray-500 text-sm font-medium">Configure your musical arrangement</p>
+          </div>
+          
+          <div className="px-6 pb-6 space-y-6">
             <div>
-              <label className="text-sm font-medium text-slate-700 mb-2 block">
+              <label className="text-base font-semibold text-gray-900 mb-3 block">
                 Original Instrument
               </label>
               <Select value={originalInstrument} onValueChange={setOriginalInstrument}>
-                <SelectTrigger>
+                <SelectTrigger className="h-14 rounded-2xl border-gray-200 bg-gray-50 text-base">
                   <SelectValue placeholder="Select original instrument" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-xl">
                   {instruments.map((instrument) => (
-                    <SelectItem key={instrument.value} value={instrument.value}>
-                      <div className="flex items-center gap-2">
-                        <instrument.icon className="w-4 h-4" />
-                        {instrument.label}
+                    <SelectItem key={instrument.value} value={instrument.value} className="h-12">
+                      <div className="flex items-center gap-3">
+                        <instrument.icon className="w-5 h-5" />
+                        <span className="font-medium">{instrument.label}</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -154,19 +158,19 @@ const HomeScreen = () => {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-700 mb-2 block">
+              <label className="text-base font-semibold text-gray-900 mb-3 block">
                 Target Instrument
               </label>
               <Select value={targetInstrument} onValueChange={setTargetInstrument}>
-                <SelectTrigger>
+                <SelectTrigger className="h-14 rounded-2xl border-gray-200 bg-gray-50 text-base">
                   <SelectValue placeholder="Select target instrument" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-xl">
                   {instruments.map((instrument) => (
-                    <SelectItem key={instrument.value} value={instrument.value}>
-                      <div className="flex items-center gap-2">
-                        <instrument.icon className="w-4 h-4" />
-                        {instrument.label}
+                    <SelectItem key={instrument.value} value={instrument.value} className="h-12">
+                      <div className="flex items-center gap-3">
+                        <instrument.icon className="w-5 h-5" />
+                        <span className="font-medium">{instrument.label}</span>
                       </div>
                     </SelectItem>
                   ))}
@@ -175,42 +179,47 @@ const HomeScreen = () => {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-700 mb-2 block">
+              <label className="text-base font-semibold text-gray-900 mb-3 block">
                 Skill Level
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 gap-3">
                 {skillLevels.map((level) => (
                   <button
                     key={level.value}
                     onClick={() => setSkillLevel(level.value)}
-                    className={`p-3 rounded-lg border-2 transition-all ${
+                    className={`p-4 rounded-2xl border-2 transition-all text-left ${
                       skillLevel === level.value
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-slate-200 hover:border-slate-300'
+                        ? 'border-blue-500 bg-blue-50 shadow-sm'
+                        : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
                     }`}
                   >
-                    <div className="text-sm font-medium text-slate-800">
+                    <div className="font-semibold text-gray-900 text-base">
                       {level.label}
+                    </div>
+                    <div className="text-sm text-gray-500 mt-1">
+                      {level.value === 'beginner' && 'Perfect for starting out'}
+                      {level.value === 'intermediate' && 'Some experience required'}
+                      {level.value === 'advanced' && 'For skilled musicians'}
                     </div>
                   </button>
                 ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Generate Button */}
         <Button 
           onClick={handleGenerate}
           disabled={!canGenerate}
-          className="w-full py-6 text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 transition-all"
+          className="w-full h-16 text-lg font-bold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all rounded-2xl shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Sparkles className="w-5 h-5 mr-2" />
+          <Sparkles className="w-6 h-6 mr-3" />
           Generate Arrangement
         </Button>
 
         {!canGenerate && (
-          <p className="text-center text-sm text-slate-500">
+          <p className="text-center text-sm text-gray-500 font-medium">
             Please select all options to generate your arrangement
           </p>
         )}
