@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Search, Music, Piano, Guitar, User, Sparkles, ChevronDown } from "lucide-react";
 import BottomNavigation from '@/components/BottomNavigation';
 
@@ -88,6 +90,10 @@ const HomeScreen = () => {
   };
 
   const canGenerate = originalInstrument && targetInstrument && skillLevel;
+
+  const getSelectedInstrument = () => {
+    return instruments.find(inst => inst.value === targetInstrument);
+  };
 
   return (
     <TooltipProvider>
@@ -219,23 +225,42 @@ const HomeScreen = () => {
 
               <div>
                 <label className="text-base font-semibold text-gray-900 mb-3 block">
-                  Ваш используемый инструмент
+                  Target Instrument
                 </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {instruments.map((instrument) => (
-                    <button
-                      key={instrument.value}
-                      onClick={() => setTargetInstrument(instrument.value)}
-                      className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center justify-center ${
-                        targetInstrument === instrument.value
-                          ? 'border-blue-500 bg-blue-50 shadow-sm'
-                          : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
-                      }`}
-                    >
-                      <instrument.icon className="w-6 h-6 text-gray-700 mb-1" />
-                      <span className="text-xs font-medium text-gray-700">{instrument.label}</span>
-                    </button>
-                  ))}
+                <div className="flex items-center gap-3">
+                  <div className={`p-4 rounded-2xl border-2 transition-all flex items-center justify-center ${
+                    targetInstrument === 'violin'
+                      ? 'border-blue-500 bg-blue-50 shadow-sm'
+                      : 'border-gray-200 bg-gray-50'
+                  }`}>
+                    <Music className="w-8 h-8 text-gray-700" />
+                  </div>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 h-12 rounded-2xl border-gray-200 bg-gray-50 justify-between text-base font-medium"
+                      >
+                        <span>
+                          {targetInstrument ? getSelectedInstrument()?.label : "Select target instrument"}
+                        </span>
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg rounded-xl z-50">
+                      {instruments.map((instrument) => (
+                        <DropdownMenuItem 
+                          key={instrument.value}
+                          onClick={() => setTargetInstrument(instrument.value)}
+                          className="flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-50 rounded-lg"
+                        >
+                          <instrument.icon className="w-4 h-4" />
+                          <span className="font-medium">{instrument.label}</span>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </div>
