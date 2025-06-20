@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,67 +13,22 @@ const ProfileScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterInstrument, setFilterInstrument] = useState('all');
   const [filterDate, setFilterDate] = useState('all');
+  const [savedArrangements, setSavedArrangements] = useState([]);
 
   const userProfile = {
     name: "Sarah Chen",
     email: "sarah.chen@email.com",
     subscription: "Premium",
     joinDate: "March 2024",
-    arrangementsCount: 24
+    arrangementsCount: 0
   };
 
-  const savedArrangements = [
-    {
-      id: 1,
-      title: "Für Elise",
-      composer: "Beethoven",
-      originalInstrument: "Piano",
-      targetInstrument: "Violin",
-      skillLevel: "Intermediate",
-      dateCreated: "2024-06-15",
-      thumbnail: "🎼"
-    },
-    {
-      id: 2,
-      title: "Canon in D",
-      composer: "Pachelbel",
-      originalInstrument: "Violin",
-      targetInstrument: "Piano",
-      skillLevel: "Beginner",
-      dateCreated: "2024-06-12",
-      thumbnail: "🎵"
-    },
-    {
-      id: 3,
-      title: "Ave Maria",
-      composer: "Schubert",
-      originalInstrument: "Piano",
-      targetInstrument: "Guitar",
-      skillLevel: "Intermediate",
-      dateCreated: "2024-06-08",
-      thumbnail: "🎶"
-    },
-    {
-      id: 4,
-      title: "Moonlight Sonata",
-      composer: "Beethoven",
-      originalInstrument: "Piano",
-      targetInstrument: "Violin",
-      skillLevel: "Advanced",
-      dateCreated: "2024-06-05",
-      thumbnail: "🎼"
-    },
-    {
-      id: 5,
-      title: "Spring (Vivaldi)",
-      composer: "Vivaldi",
-      originalInstrument: "Violin",
-      targetInstrument: "Piano",
-      skillLevel: "Advanced",
-      dateCreated: "2024-06-01",
-      thumbnail: "🎵"
-    }
-  ];
+  useEffect(() => {
+    // Load saved arrangements from localStorage
+    const arrangements = JSON.parse(localStorage.getItem('savedArrangements') || '[]');
+    setSavedArrangements(arrangements);
+    userProfile.arrangementsCount = arrangements.length;
+  }, []);
 
   const skillLevelColors = {
     Beginner: "bg-green-100 text-green-800",
@@ -118,7 +72,7 @@ const ProfileScreen = () => {
             </Button>
             <div className="text-center">
               <h1 className="text-lg font-bold text-gray-900">My Library</h1>
-              <p className="text-sm text-gray-500 font-medium">{userProfile.arrangementsCount} arrangements</p>
+              <p className="text-sm text-gray-500 font-medium">{savedArrangements.length} arrangements</p>
             </div>
             <div className="w-10" /> {/* Spacer for center alignment */}
           </div>
@@ -267,7 +221,7 @@ const ProfileScreen = () => {
             </div>
             <p className="text-gray-900 font-bold text-lg mb-2">No arrangements found</p>
             <p className="text-sm text-gray-500 font-medium">
-              Try adjusting your search or filters
+              {savedArrangements.length === 0 ? "Create your first arrangement to see it here" : "Try adjusting your search or filters"}
             </p>
           </div>
         )}

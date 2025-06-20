@@ -14,7 +14,7 @@ const HomeScreen = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [originalInstrument, setOriginalInstrument] = useState('');
-  const [targetInstrument, setTargetInstrument] = useState('');
+  const [targetInstrument, setTargetInstrument] = useState('violin'); // Default to violin
   const [skillLevel, setSkillLevel] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedPiece, setSelectedPiece] = useState(null);
@@ -228,28 +228,27 @@ const HomeScreen = () => {
                   Target Instrument
                 </label>
                 <div className="flex items-center gap-3">
-                  <div className={`p-4 rounded-2xl border-2 transition-all flex items-center justify-center ${
-                    targetInstrument === 'violin'
-                      ? 'border-blue-500 bg-blue-50 shadow-sm'
-                      : 'border-gray-200 bg-gray-50'
-                  }`}>
-                    <Music className="w-8 h-8 text-gray-700" />
+                  <div className="flex items-center gap-3 flex-1 p-4 rounded-2xl border-2 border-blue-500 bg-blue-50">
+                    <Music className="w-6 h-6 text-blue-600" />
+                    <div className="flex-1">
+                      <div className="font-semibold text-gray-900">Violin</div>
+                      <div className="text-sm text-gray-500">Your main instrument</div>
+                    </div>
                   </div>
                   
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button 
                         variant="outline" 
-                        className="flex-1 h-12 rounded-2xl border-gray-200 bg-gray-50 justify-between text-base font-medium"
+                        size="sm"
+                        className="h-12 px-4 rounded-2xl border-gray-200 bg-gray-50 hover:bg-white"
                       >
-                        <span>
-                          {targetInstrument ? getSelectedInstrument()?.label : "Select target instrument"}
-                        </span>
-                        <ChevronDown className="w-4 h-4" />
+                        <span className="text-sm font-medium">or choose other</span>
+                        <ChevronDown className="w-4 h-4 ml-2" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56 bg-white border border-gray-200 shadow-lg rounded-xl z-50">
-                      {instruments.map((instrument) => (
+                    <DropdownMenuContent className="w-48 bg-white border border-gray-200 shadow-lg rounded-xl z-50">
+                      {instruments.filter(inst => inst.value !== 'violin').map((instrument) => (
                         <DropdownMenuItem 
                           key={instrument.value}
                           onClick={() => setTargetInstrument(instrument.value)}
@@ -262,6 +261,22 @@ const HomeScreen = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
+                
+                {targetInstrument !== 'violin' && (
+                  <div className="mt-3 p-3 bg-gray-50 rounded-xl flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">Selected: {getSelectedInstrument()?.label}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setTargetInstrument('violin')}
+                      className="text-xs text-gray-500 hover:text-gray-700"
+                    >
+                      Reset to Violin
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
