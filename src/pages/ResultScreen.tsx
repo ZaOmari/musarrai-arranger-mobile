@@ -55,7 +55,7 @@ const ResultScreen = () => {
     <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-md mx-auto px-6 py-4">
+        <div className="max-w-lg mx-auto px-3 py-4">
           <div className="flex items-center justify-between">
             <Button 
               variant="ghost" 
@@ -82,7 +82,7 @@ const ResultScreen = () => {
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-6 py-8 space-y-6">
+      <div className="max-w-lg mx-auto px-3 py-8 space-y-6">
         {/* Piece Info */}
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
           <div className="flex justify-between items-start">
