@@ -227,11 +227,11 @@ const HomeScreen = () => {
                   Target Instrument
                 </label>
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-3 flex-1 p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                  <div className="flex items-center gap-3 flex-1 p-4 rounded-2xl border border-gray-200 bg-gray-50 group hover:bg-white transition-colors">
                     <Music className="w-6 h-6 text-gray-600" />
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900">Violin</div>
-                      <div className="text-sm text-gray-500">Your main instrument</div>
+                      <div className="text-sm text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">Your main instrument</div>
                     </div>
                   </div>
                   
