@@ -229,34 +229,34 @@ const HomeScreen = () => {
                 <div className="grid grid-cols-3 gap-3">
                   <button
                     onClick={() => setTargetInstrument('violin')}
-                    className={`col-span-1 p-4 rounded-2xl border-2 transition-all text-center ${
+                    className={`col-span-1 p-4 rounded-2xl border-2 transition-all text-left ${
                       targetInstrument === 'violin'
                         ? 'border-blue-500 bg-blue-50 shadow-sm'
                         : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
                     }`}
                   >
-                    <div className="flex items-center justify-center mb-2">
-                      <Music className="w-6 h-6 text-gray-600" />
-                    </div>
-                    <div className="font-semibold text-gray-900 text-sm">
-                      Violin
+                    <div className="flex items-center gap-3">
+                      <Music className="w-4 h-4 text-gray-600" />
+                      <div className="font-semibold text-gray-900 text-sm">
+                        Violin
+                      </div>
                     </div>
                   </button>
                   
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button 
-                        className={`col-span-2 p-4 rounded-2xl border-2 transition-all text-center ${
+                        className={`col-span-2 p-4 rounded-2xl border-2 transition-all text-left ${
                           targetInstrument !== 'violin'
                             ? 'border-blue-500 bg-blue-50 shadow-sm'
                             : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
                         }`}
                       >
-                        <div className="flex items-center justify-center mb-2">
-                          <ChevronDown className="w-6 h-6 text-gray-600" />
-                        </div>
-                        <div className="font-semibold text-gray-900 text-sm">
-                          {targetInstrument !== 'violin' ? getSelectedInstrument()?.label : 'Other Instruments'}
+                        <div className="flex items-center gap-3">
+                          <ChevronDown className="w-4 h-4 text-gray-600" />
+                          <div className="font-semibold text-gray-900 text-sm">
+                            {targetInstrument !== 'violin' ? getSelectedInstrument()?.label : 'Other Instruments'}
+                          </div>
                         </div>
                       </button>
                     </DropdownMenuTrigger>
