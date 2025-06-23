@@ -184,7 +184,7 @@ const ProfileScreen = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 mb-3">
                       <Badge className={`text-xs font-medium ${skillLevelColors[arrangement.skillLevel]}`}>
                         {arrangement.skillLevel}
                       </Badge>
@@ -193,6 +193,14 @@ const ProfileScreen = () => {
                         {new Date(arrangement.dateCreated).toLocaleDateString()}
                       </span>
                     </div>
+
+                    {/* Notes Preview */}
+                    {arrangement.notes && (
+                      <div className="mt-3 p-3 bg-gray-50 rounded-xl">
+                        <p className="text-sm text-gray-700 font-medium mb-1">Notes:</p>
+                        <p className="text-sm text-gray-600 line-clamp-2">{arrangement.notes}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
                 

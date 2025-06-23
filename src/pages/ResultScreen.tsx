@@ -18,6 +18,7 @@ const ResultScreen = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
+  const [notes, setNotes] = useState('');
   const { originalInstrument, targetInstrument, skillLevel, selectedPiece } = location.state || {};
 
   const handleSaveArrangement = async () => {
@@ -36,7 +37,8 @@ const ResultScreen = () => {
       targetInstrument: targetInstrument,
       skillLevel: skillLevel,
       dateCreated: new Date().toISOString().split('T')[0],
-      thumbnail: "🎼"
+      thumbnail: "🎼",
+      notes: notes
     };
     
     savedArrangements.push(newArrangement);
@@ -68,7 +70,7 @@ const ResultScreen = () => {
         <AudioControls />
         <DifficultyAdjustment skillLevel={skillLevel} />
         <ExportOptions />
-        <NotesSection />
+        <NotesSection notes={notes} setNotes={setNotes} />
         
         {/* Save Arrangement Button */}
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">

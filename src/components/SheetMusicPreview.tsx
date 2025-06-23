@@ -14,20 +14,18 @@ const SheetMusicPreview = () => {
         </div>
       </div>
       <div className="px-6 pb-6">
-        <div className="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-dashed border-gray-200 rounded-2xl p-12 text-center">
-          <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <Music className="w-10 h-10 text-gray-400" />
+        <div className="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center">
+          <h4 className="text-gray-900 font-bold text-lg mb-4">Interactive Sheet Music</h4>
+          <div className="bg-white rounded-xl p-4 shadow-sm">
+            <img 
+              src="/lovable-uploads/ce7752b7-9bee-430c-86af-e98c4c1b494b.png" 
+              alt="Pirates of the Caribbean Sheet Music"
+              className="w-full h-auto rounded-lg"
+            />
           </div>
-          <h4 className="text-gray-900 font-bold text-lg mb-2">Interactive Sheet Music</h4>
-          <p className="text-gray-500 font-medium mb-6">
+          <p className="text-gray-500 font-medium mt-4">
             Scroll, zoom, and interact with your arrangement
           </p>
-          <div className="space-y-3">
-            <div className="h-2 bg-gray-300 rounded-full"></div>
-            <div className="h-2 bg-gray-300 rounded-full w-3/4 mx-auto"></div>
-            <div className="h-2 bg-gray-300 rounded-full w-5/6 mx-auto"></div>
-            <div className="h-2 bg-gray-300 rounded-full w-2/3 mx-auto"></div>
-          </div>
         </div>
       </div>
     </div>
