@@ -226,25 +226,39 @@ const HomeScreen = () => {
                 <label className="text-base font-semibold text-gray-900 mb-3 block">
                   Target Instrument
                 </label>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-3 flex-1 p-4 rounded-2xl border border-gray-200 bg-gray-50 group hover:bg-white transition-colors">
-                    <Music className="w-6 h-6 text-gray-600" />
-                    <div className="flex-1">
-                      <div className="font-semibold text-gray-900">Violin</div>
-                      <div className="text-sm text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">Your main instrument</div>
+                <div className="grid grid-cols-3 gap-3">
+                  <button
+                    onClick={() => setTargetInstrument('violin')}
+                    className={`col-span-1 p-4 rounded-2xl border-2 transition-all text-center ${
+                      targetInstrument === 'violin'
+                        ? 'border-blue-500 bg-blue-50 shadow-sm'
+                        : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
+                    }`}
+                  >
+                    <div className="flex items-center justify-center mb-2">
+                      <Music className="w-6 h-6 text-gray-600" />
                     </div>
-                  </div>
+                    <div className="font-semibold text-gray-900 text-sm">
+                      Violin
+                    </div>
+                  </button>
                   
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="h-[72px] px-4 rounded-2xl border-gray-200 bg-gray-50 hover:bg-white flex-[2]"
+                      <button 
+                        className={`col-span-2 p-4 rounded-2xl border-2 transition-all text-center ${
+                          targetInstrument !== 'violin'
+                            ? 'border-blue-500 bg-blue-50 shadow-sm'
+                            : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
+                        }`}
                       >
-                        <span className="text-sm font-medium">or choose other</span>
-                        <ChevronDown className="w-4 h-4 ml-2" />
-                      </Button>
+                        <div className="flex items-center justify-center mb-2">
+                          <ChevronDown className="w-6 h-6 text-gray-600" />
+                        </div>
+                        <div className="font-semibold text-gray-900 text-sm">
+                          {targetInstrument !== 'violin' ? getSelectedInstrument()?.label : 'Other Instruments'}
+                        </div>
+                      </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-48 bg-white border border-gray-200 shadow-lg rounded-xl z-50">
                       {instruments.filter(inst => inst.value !== 'violin').map((instrument) => (
@@ -260,22 +274,6 @@ const HomeScreen = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-                
-                {targetInstrument !== 'violin' && (
-                  <div className="mt-3 p-3 bg-gray-50 rounded-xl flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-gray-700">Selected: {getSelectedInstrument()?.label}</span>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setTargetInstrument('violin')}
-                      className="text-xs text-gray-500 hover:text-gray-700"
-                    >
-                      Reset to Violin
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
