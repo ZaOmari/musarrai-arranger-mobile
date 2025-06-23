@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -228,8 +227,8 @@ const HomeScreen = () => {
                   Target Instrument
                 </label>
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-3 flex-1 p-4 rounded-2xl border-2 border-blue-500 bg-blue-50">
-                    <Music className="w-6 h-6 text-blue-600" />
+                  <div className="flex items-center gap-3 flex-1 p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                    <Music className="w-6 h-6 text-gray-600" />
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900">Violin</div>
                       <div className="text-sm text-gray-500">Your main instrument</div>
@@ -241,7 +240,7 @@ const HomeScreen = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        className="h-12 px-4 rounded-2xl border-gray-200 bg-gray-50 hover:bg-white"
+                        className="h-[72px] px-4 rounded-2xl border-gray-200 bg-gray-50 hover:bg-white flex-[2]"
                       >
                         <span className="text-sm font-medium">or choose other</span>
                         <ChevronDown className="w-4 h-4 ml-2" />
