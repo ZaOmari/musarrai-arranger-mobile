@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -12,11 +11,13 @@ import AudioControls from '@/components/AudioControls';
 import DifficultyAdjustment from '@/components/DifficultyAdjustment';
 import ExportOptions from '@/components/ExportOptions';
 import NotesSection from '@/components/NotesSection';
+import { useSettings } from '@/contexts/SettingsContext';
 
 const ResultScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useSettings();
   const [isSaving, setIsSaving] = useState(false);
   const [notes, setNotes] = useState('');
   const { originalInstrument, targetInstrument, skillLevel, selectedPiece } = location.state || {};
@@ -47,8 +48,8 @@ const ResultScreen = () => {
     setIsSaving(false);
     
     toast({
-      title: "Arrangement Saved!",
-      description: "Redirecting to Score View...",
+      title: t('arrangementSaved'),
+      description: t('redirectingToScore'),
     });
     
     // Navigate to Score View after a short delay
@@ -63,7 +64,7 @@ const ResultScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-32">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-32">
       <ResultHeader 
         originalInstrument={originalInstrument} 
         targetInstrument={targetInstrument} 
@@ -78,14 +79,14 @@ const ResultScreen = () => {
         <NotesSection notes={notes} setNotes={setNotes} />
         
         {/* Save Arrangement Button */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
           <Button 
             onClick={handleSaveArrangement}
             disabled={isSaving}
             className="w-full h-16 text-lg font-bold bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all rounded-2xl shadow-lg disabled:opacity-50"
           >
             <Save className="w-6 h-6 mr-3" />
-            {isSaving ? "Saving..." : "Save Arrangement"}
+            {isSaving ? t('saving') : t('saveArrangement')}
           </Button>
         </div>
       </div>

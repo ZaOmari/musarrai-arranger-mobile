@@ -16,6 +16,7 @@ const SettingsContext = createContext<SettingsContextType | undefined>(undefined
 
 const translations = {
   en: {
+    // Profile screen
     profile: 'Profile',
     settingsPreferences: 'Settings & Preferences',
     changeEmail: 'Change Email',
@@ -39,9 +40,49 @@ const translations = {
     violin: 'Violin',
     guitar: 'Guitar',
     trumpet: 'Trumpet',
-    drums: 'Drums'
+    drums: 'Drums',
+    
+    // Home screen
+    home: 'Home',
+    library: 'Library',
+    
+    // Result screen
+    yourArrangement: 'Your Arrangement',
+    arrangementSaved: 'Arrangement Saved!',
+    redirectingToScore: 'Redirecting to Score View...',
+    saveArrangement: 'Save Arrangement',
+    saving: 'Saving...',
+    
+    // Score View screen
+    scoreView: 'Score View',
+    adaptedFor: 'Adapted for',
+    playPause: 'Play/Pause',
+    exportOptions: 'Export Options',
+    backToLibrary: 'Back to Library',
+    notes: 'Notes',
+    addNotes: 'Add your notes here...',
+    
+    // Library screen
+    myLibrary: 'My Library',
+    recentArrangements: 'Recent Arrangements',
+    noArrangements: 'No arrangements yet',
+    createFirst: 'Create your first arrangement!',
+    readapt: 'Re-adapt',
+    
+    // Common
+    back: 'Back',
+    save: 'Save',
+    cancel: 'Cancel',
+    edit: 'Edit',
+    delete: 'Delete',
+    share: 'Share',
+    export: 'Export',
+    pdf: 'PDF',
+    midi: 'MIDI',
+    musicxml: 'MusicXML'
   },
   ru: {
+    // Profile screen
     profile: 'Профиль',
     settingsPreferences: 'Настройки и предпочтения',
     changeEmail: 'Изменить Email',
@@ -65,7 +106,46 @@ const translations = {
     violin: 'Скрипка',
     guitar: 'Гитара',
     trumpet: 'Труба',
-    drums: 'Барабаны'
+    drums: 'Барабаны',
+    
+    // Home screen
+    home: 'Главная',
+    library: 'Библиотека',
+    
+    // Result screen
+    yourArrangement: 'Ваша аранжировка',
+    arrangementSaved: 'Аранжировка сохранена!',
+    redirectingToScore: 'Переход к просмотру партитуры...',
+    saveArrangement: 'Сохранить аранжировку',
+    saving: 'Сохранение...',
+    
+    // Score View screen
+    scoreView: 'Просмотр партитуры',
+    adaptedFor: 'Адаптировано для',
+    playPause: 'Воспроизвести/Пауза',
+    exportOptions: 'Параметры экспорта',
+    backToLibrary: 'Вернуться в библиотеку',
+    notes: 'Заметки',
+    addNotes: 'Добавьте свои заметки здесь...',
+    
+    // Library screen
+    myLibrary: 'Моя библиотека',
+    recentArrangements: 'Недавние аранжировки',
+    noArrangements: 'Пока нет аранжировок',
+    createFirst: 'Создайте свою первую аранжировку!',
+    readapt: 'Переадаптировать',
+    
+    // Common
+    back: 'Назад',
+    save: 'Сохранить',
+    cancel: 'Отмена',
+    edit: 'Редактировать',
+    delete: 'Удалить',
+    share: 'Поделиться',
+    export: 'Экспорт',
+    pdf: 'PDF',
+    midi: 'MIDI',
+    musicxml: 'MusicXML'
   }
 };
 
