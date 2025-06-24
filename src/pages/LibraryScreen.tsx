@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -52,6 +51,23 @@ const LibraryScreen = () => {
     
     return matchesSearch && matchesInstrument && matchesDate;
   });
+
+  const handleReAdapt = (arrangement) => {
+    // Navigate to result screen with arrangement data
+    navigate('/result', {
+      state: {
+        originalInstrument: arrangement.originalInstrument,
+        targetInstrument: arrangement.targetInstrument,
+        skillLevel: arrangement.skillLevel,
+        selectedPiece: {
+          title: arrangement.title,
+          composer: arrangement.composer
+        },
+        isReAdapt: true,
+        existingNotes: arrangement.notes
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
@@ -186,7 +202,12 @@ const LibraryScreen = () => {
                     <Download className="w-4 h-4 mr-2" />
                     Download
                   </Button>
-                  <Button size="sm" variant="outline" className="flex-1 h-12 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="flex-1 h-12 rounded-2xl bg-gray-50 border-gray-200 hover:bg-white font-semibold"
+                    onClick={() => handleReAdapt(arrangement)}
+                  >
                     <Edit className="w-4 h-4 mr-2" />
                     Re-adapt
                   </Button>
