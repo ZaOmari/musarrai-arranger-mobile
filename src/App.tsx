@@ -8,6 +8,7 @@ import HomeScreen from "./pages/HomeScreen";
 import ResultScreen from "./pages/ResultScreen";
 import LibraryScreen from "./pages/LibraryScreen";
 import ProfileScreen from "./pages/ProfileScreen";
+import ScoreViewScreen from "./pages/ScoreViewScreen";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/result" element={<ResultScreen />} />
           <Route path="/library" element={<LibraryScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/score" element={<ScoreViewScreen />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

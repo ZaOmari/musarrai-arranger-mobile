@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,15 @@ const LibraryScreen = () => {
         },
         isReAdapt: true,
         existingNotes: arrangement.notes
+      }
+    });
+  };
+
+  const handleViewScore = (arrangement) => {
+    navigate('/score', {
+      state: {
+        arrangement: arrangement,
+        fromSave: false
       }
     });
   };
@@ -161,8 +171,18 @@ const LibraryScreen = () => {
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-2xl">{arrangement.thumbnail}</span>
                       <div>
-                        <h3 className="font-bold text-gray-900 text-lg">{arrangement.title}</h3>
-                        <p className="text-sm text-gray-500 font-medium">{arrangement.composer}</p>
+                        <h3 
+                          className="font-bold text-gray-900 text-lg hover:text-blue-600 cursor-pointer transition-colors"
+                          onClick={() => handleViewScore(arrangement)}
+                        >
+                          {arrangement.title}
+                        </h3>
+                        <p 
+                          className="text-sm text-gray-500 font-medium hover:text-blue-500 cursor-pointer transition-colors"
+                          onClick={() => handleViewScore(arrangement)}
+                        >
+                          {arrangement.composer}
+                        </p>
                       </div>
                     </div>
                     

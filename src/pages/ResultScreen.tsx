@@ -41,19 +41,24 @@ const ResultScreen = () => {
       notes: notes
     };
     
-    savedArrangements.push(newArrangement);
+    savedArrangements.unshift(newArrangement); // Add to beginning of array
     localStorage.setItem('savedArrangements', JSON.stringify(savedArrangements));
     
     setIsSaving(false);
     
     toast({
       title: "Arrangement Saved!",
-      description: "Your arrangement has been saved to your library.",
+      description: "Redirecting to Score View...",
     });
     
-    // Navigate to profile after a short delay
+    // Navigate to Score View after a short delay
     setTimeout(() => {
-      navigate('/profile');
+      navigate('/score', {
+        state: {
+          arrangement: newArrangement,
+          fromSave: true
+        }
+      });
     }, 1000);
   };
 
