@@ -6,15 +6,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Search, Music, Piano, Guitar, User, Sparkles, ChevronDown } from "lucide-react";
+import { Search, Music, Piano, Guitar, User, Sparkles, ChevronDown, Plus, X, Settings } from "lucide-react";
 import BottomNavigation from '@/components/BottomNavigation';
 
 const HomeScreen = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [originalInstrument, setOriginalInstrument] = useState('');
-  const [targetInstrument, setTargetInstrument] = useState('violin'); // Default to violin
-  const [skillLevel, setSkillLevel] = useState('');
+  const [arrangementType, setArrangementType] = useState('');
+  const [selectedInstruments, setSelectedInstruments] = useState([]);
+  const [globalSkillLevel, setGlobalSkillLevel] = useState('');
+  const [useGlobalSkill, setUseGlobalSkill] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const searchRef = useRef(null);
@@ -34,12 +35,28 @@ const HomeScreen = () => {
     { id: 3, title: "Moonlight Sonata", composer: "Ludwig van Beethoven", genre: "Classical", difficulty: "Advanced" },
   ];
 
-  const instruments = [
+  const availableInstruments = [
     { value: "piano", label: "Piano", icon: Piano },
     { value: "violin", label: "Violin", icon: Music },
     { value: "guitar", label: "Guitar", icon: Guitar },
     { value: "trumpet", label: "Trumpet", icon: Music },
     { value: "drums", label: "Drums", icon: Music },
+    { value: "cello", label: "Cello", icon: Music },
+    { value: "flute", label: "Flute", icon: Music },
+  ];
+
+  const arrangementTypes = [
+    { value: "solo", label: "Solo", description: "Single instrument" },
+    { value: "solo_accompaniment", label: "Solo + Accompaniment", description: "Lead with support" },
+    { value: "solo_ensemble", label: "Solo + Ensemble", description: "Featured with group" },
+    { value: "ensemble", label: "Ensemble", description: "Multiple instruments" },
+    { value: "chamber_orchestra", label: "Chamber Orchestra", description: "Coming Soon", disabled: true },
+  ];
+
+  const instrumentRoles = [
+    { value: "solo", label: "Solo" },
+    { value: "accompaniment", label: "Accompaniment" },
+    { value: "ensemble", label: "Ensemble" },
   ];
 
   const skillLevels = [
@@ -65,6 +82,11 @@ const HomeScreen = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Reset instruments when arrangement type changes
+  useEffect(() => {
+    setSelectedInstruments([]);
+  }, [arrangementType]);
+
   const handleSearchFocus = () => {
     setShowDropdown(true);
   };
@@ -75,24 +97,67 @@ const HomeScreen = () => {
     setShowDropdown(false);
   };
 
+  const getMaxInstruments = () => {
+    switch (arrangementType) {
+      case 'solo': return 1;
+      case 'solo_accompaniment': return 2;
+      case 'solo_ensemble': return 4;
+      case 'ensemble': return 4;
+      default: return 0;
+    }
+  };
+
+  const getAvailableRoles = () => {
+    switch (arrangementType) {
+      case 'solo': return [{ value: "solo", label: "Solo" }];
+      case 'solo_accompaniment': return [
+        { value: "solo", label: "Solo" },
+        { value: "accompaniment", label: "Accompaniment" }
+      ];
+      case 'solo_ensemble': return instrumentRoles;
+      case 'ensemble': return [{ value: "ensemble", label: "Ensemble" }];
+      default: return [];
+    }
+  };
+
+  const addInstrument = () => {
+    if (selectedInstruments.length < getMaxInstruments()) {
+      const newInstrument = {
+        id: Date.now(),
+        instrument: '',
+        role: getAvailableRoles()[0]?.value || 'solo',
+        skillLevel: useGlobalSkill ? globalSkillLevel : ''
+      };
+      setSelectedInstruments([...selectedInstruments, newInstrument]);
+    }
+  };
+
+  const removeInstrument = (id) => {
+    setSelectedInstruments(selectedInstruments.filter(inst => inst.id !== id));
+  };
+
+  const updateInstrument = (id, field, value) => {
+    setSelectedInstruments(selectedInstruments.map(inst => 
+      inst.id === id ? { ...inst, [field]: value } : inst
+    ));
+  };
+
   const handleGenerate = () => {
-    if (originalInstrument && targetInstrument && skillLevel) {
+    if (arrangementType && selectedInstruments.length > 0 && 
+        (useGlobalSkill ? globalSkillLevel : selectedInstruments.every(inst => inst.skillLevel))) {
       navigate('/result', { 
         state: { 
-          originalInstrument, 
-          targetInstrument, 
-          skillLevel,
+          arrangementType,
+          instruments: selectedInstruments,
+          globalSkillLevel: useGlobalSkill ? globalSkillLevel : null,
           selectedPiece: selectedPiece || filteredLibrary[0] || musicLibrary[0]
         } 
       });
     }
   };
 
-  const canGenerate = originalInstrument && targetInstrument && skillLevel;
-
-  const getSelectedInstrument = () => {
-    return instruments.find(inst => inst.value === targetInstrument);
-  };
+  const canGenerate = arrangementType && selectedInstruments.length > 0 && 
+    (useGlobalSkill ? globalSkillLevel : selectedInstruments.every(inst => inst.skillLevel));
 
   return (
     <TooltipProvider>
@@ -196,115 +261,255 @@ const HomeScreen = () => {
             </div>
           </div>
 
-          {/* Instruments Block */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 space-y-5">
-            <h2 className="text-xl font-bold text-gray-900">Select Instruments</h2>
-            
-            <div className="grid grid-cols-1 gap-4">
-              <div>
-                <label className="text-base font-semibold text-gray-900 mb-3 block">
-                  Original Instrument
-                </label>
-                <Select value={originalInstrument} onValueChange={setOriginalInstrument}>
-                  <SelectTrigger className="h-12 rounded-2xl border-gray-200 bg-gray-50 text-base">
-                    <SelectValue placeholder="Select original instrument" />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-xl bg-white border border-gray-200 shadow-lg z-50">
-                    {instruments.map((instrument) => (
-                      <SelectItem key={instrument.value} value={instrument.value} className="h-10">
-                        <div className="flex items-center gap-3">
-                          <instrument.icon className="w-4 h-4" />
-                          <span className="font-medium">{instrument.label}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="text-base font-semibold text-gray-900 mb-3 block">
-                  Target Instrument
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  <button
-                    onClick={() => setTargetInstrument('violin')}
-                    className={`col-span-1 p-4 rounded-2xl border-2 transition-all text-left ${
-                      targetInstrument === 'violin'
-                        ? 'border-blue-500 bg-blue-50 shadow-sm'
-                        : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Music className="w-4 h-4 text-gray-600" />
+          {/* Arrangement Type Block */}
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">⚙️ Arrangement Type</h2>
+            <div className="space-y-3">
+              {arrangementTypes.map((type) => (
+                <button
+                  key={type.value}
+                  onClick={() => !type.disabled && setArrangementType(type.value)}
+                  disabled={type.disabled}
+                  className={`w-full p-4 rounded-2xl border-2 transition-all text-left ${
+                    arrangementType === type.value
+                      ? 'border-blue-500 bg-blue-50 shadow-sm'
+                      : type.disabled
+                      ? 'border-gray-200 bg-gray-100 opacity-50 cursor-not-allowed'
+                      : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
                       <div className="font-semibold text-gray-900 text-sm">
-                        Violin
+                        {type.label}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {type.description}
                       </div>
                     </div>
-                  </button>
-                  
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button 
-                        className={`col-span-2 p-4 rounded-2xl border-2 transition-all text-left ${
-                          targetInstrument !== 'violin'
-                            ? 'border-blue-500 bg-blue-50 shadow-sm'
-                            : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <ChevronDown className="w-4 h-4 text-gray-600" />
-                          <div className="font-semibold text-gray-900 text-sm">
-                            {targetInstrument !== 'violin' ? getSelectedInstrument()?.label : 'Other Instruments'}
-                          </div>
-                        </div>
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-48 bg-white border border-gray-200 shadow-lg rounded-xl z-50">
-                      {instruments.filter(inst => inst.value !== 'violin').map((instrument) => (
-                        <DropdownMenuItem 
-                          key={instrument.value}
-                          onClick={() => setTargetInstrument(instrument.value)}
-                          className="flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-50 rounded-lg"
-                        >
-                          <instrument.icon className="w-4 h-4" />
-                          <span className="font-medium">{instrument.label}</span>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Skill Level Block */}
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Skill Level</h2>
-            <div className="grid grid-cols-3 gap-3">
-              {skillLevels.map((level) => (
-                <Tooltip key={level.value}>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={() => setSkillLevel(level.value)}
-                      className={`p-4 rounded-2xl border-2 transition-all text-center ${
-                        skillLevel === level.value
-                          ? 'border-blue-500 bg-blue-50 shadow-sm'
-                          : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
-                      }`}
-                    >
-                      <div className="font-semibold text-gray-900 text-sm">
-                        {level.label}
-                      </div>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{level.tooltip}</p>
-                  </TooltipContent>
-                </Tooltip>
+                    {type.disabled && (
+                      <Badge variant="secondary" className="text-xs">
+                        Coming Soon
+                      </Badge>
+                    )}
+                  </div>
+                </button>
               ))}
             </div>
           </div>
+
+          {/* Instruments Block */}
+          {arrangementType && (
+            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 space-y-5">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-gray-900">🎻 Add Instruments</h2>
+                {selectedInstruments.length < getMaxInstruments() && (
+                  <Button
+                    onClick={addInstrument}
+                    variant="outline"
+                    size="sm"
+                    className="rounded-xl"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add
+                  </Button>
+                )}
+              </div>
+
+              {selectedInstruments.map((instrument, index) => (
+                <div key={instrument.id} className="p-4 border border-gray-200 rounded-2xl space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-gray-700">
+                      Instrument {index + 1}
+                    </span>
+                    {selectedInstruments.length > 1 && (
+                      <Button
+                        onClick={() => removeInstrument(instrument.id)}
+                        variant="ghost"
+                        size="sm"
+                        className="p-1"
+                      >
+                        <X className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-1 block">
+                        Instrument
+                      </label>
+                      <Select 
+                        value={instrument.instrument} 
+                        onValueChange={(value) => updateInstrument(instrument.id, 'instrument', value)}
+                      >
+                        <SelectTrigger className="h-10 rounded-xl border-gray-200 text-sm">
+                          <SelectValue placeholder="Select..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-xl z-50">
+                          {availableInstruments.map((inst) => (
+                            <SelectItem key={inst.value} value={inst.value} className="h-8">
+                              <div className="flex items-center gap-2">
+                                <inst.icon className="w-3 h-3" />
+                                <span className="text-sm">{inst.label}</span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-1 block">
+                        Role
+                      </label>
+                      <Select 
+                        value={instrument.role} 
+                        onValueChange={(value) => updateInstrument(instrument.id, 'role', value)}
+                      >
+                        <SelectTrigger className="h-10 rounded-xl border-gray-200 text-sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-xl z-50">
+                          {getAvailableRoles().map((role) => (
+                            <SelectItem key={role.value} value={role.value} className="h-8">
+                              <span className="text-sm">{role.label}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {!useGlobalSkill && (
+                    <div>
+                      <label className="text-xs font-medium text-gray-700 mb-1 block">
+                        Skill Level
+                      </label>
+                      <Select 
+                        value={instrument.skillLevel} 
+                        onValueChange={(value) => updateInstrument(instrument.id, 'skillLevel', value)}
+                      >
+                        <SelectTrigger className="h-10 rounded-xl border-gray-200 text-sm">
+                          <SelectValue placeholder="Select level..." />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-xl z-50">
+                          {skillLevels.map((level) => (
+                            <SelectItem key={level.value} value={level.value} className="h-8">
+                              <span className="text-sm">{level.label}</span>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {selectedInstruments.length === 0 && (
+                <div className="text-center text-gray-500 text-sm py-8">
+                  <Music className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  Click "Add" to start adding instruments
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Skill Level Block */}
+          {arrangementType && selectedInstruments.length > 0 && (
+            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-900">📉 Skill Level</h2>
+                <Button
+                  onClick={() => setUseGlobalSkill(!useGlobalSkill)}
+                  variant="outline"
+                  size="sm"
+                  className="rounded-xl"
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  {useGlobalSkill ? 'Individual' : 'Global'}
+                </Button>
+              </div>
+
+              {useGlobalSkill ? (
+                <div className="grid grid-cols-3 gap-3">
+                  {skillLevels.map((level) => (
+                    <Tooltip key={level.value}>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => setGlobalSkillLevel(level.value)}
+                          className={`p-4 rounded-2xl border-2 transition-all text-center ${
+                            globalSkillLevel === level.value
+                              ? 'border-blue-500 bg-blue-50 shadow-sm'
+                              : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white'
+                          }`}
+                        >
+                          <div className="font-semibold text-gray-900 text-sm">
+                            {level.label}
+                          </div>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{level.tooltip}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-sm text-gray-600 text-center py-4">
+                  Set individual skill levels for each instrument above
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Summary Section */}
+          {arrangementType && selectedInstruments.length > 0 && (
+            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Summary</h2>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-700">Type:</span>
+                  <span className="text-sm text-gray-900">
+                    {arrangementTypes.find(t => t.value === arrangementType)?.label}
+                  </span>
+                </div>
+                
+                <div className="space-y-2">
+                  <span className="text-sm font-medium text-gray-700">Instruments:</span>
+                  {selectedInstruments.map((inst, index) => {
+                    const instrumentInfo = availableInstruments.find(i => i.value === inst.instrument);
+                    return (
+                      <div key={inst.id} className="flex justify-between items-center text-sm pl-4">
+                        <span className="text-gray-600">
+                          {index + 1}. {instrumentInfo?.label || 'Not selected'}
+                        </span>
+                        <div className="flex gap-2">
+                          <Badge variant="outline" className="text-xs">
+                            {inst.role}
+                          </Badge>
+                          {!useGlobalSkill && inst.skillLevel && (
+                            <Badge variant="secondary" className="text-xs">
+                              {skillLevels.find(s => s.value === inst.skillLevel)?.label}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {useGlobalSkill && globalSkillLevel && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700">Global Skill:</span>
+                    <Badge variant="secondary" className="text-sm">
+                      {skillLevels.find(s => s.value === globalSkillLevel)?.label}
+                    </Badge>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Generate Button Block */}
           <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
@@ -319,7 +524,7 @@ const HomeScreen = () => {
 
             {!canGenerate && (
               <p className="text-center text-sm text-gray-500 font-medium mt-4">
-                Please select all options to generate your arrangement
+                Please complete all sections to generate your arrangement
               </p>
             )}
           </div>
