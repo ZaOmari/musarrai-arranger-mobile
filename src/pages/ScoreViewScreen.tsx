@@ -6,10 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Play, Pause, Download, FileText, Music, Volume2 } from "lucide-react";
 import BottomNavigation from '@/components/BottomNavigation';
 import NotesSection from '@/components/NotesSection';
+import { useSettings } from '@/contexts/SettingsContext';
 
 const ScoreViewScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useSettings();
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackTime, setPlaybackTime] = useState("0:00");
   const [totalTime] = useState("3:24");
@@ -52,22 +54,22 @@ const ScoreViewScreen = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-24">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-xl border-b border-gray-100 sticky top-0 z-40">
+      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-700 sticky top-0 z-40">
         <div className="mx-auto px-4 py-6 max-w-lg">
           <div className="flex items-center justify-between">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={() => navigate(-1)}
-              className="w-10 h-10 p-0 rounded-xl bg-gray-100 hover:bg-gray-200"
+              className="w-10 h-10 p-0 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-5 h-5 text-gray-900 dark:text-white" />
             </Button>
             <div className="text-center">
-              <h1 className="text-lg font-bold text-gray-900">Score View</h1>
-              <p className="text-sm text-gray-500 font-medium">Interactive Sheet Music</p>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">{t('scoreView')}</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Interactive Sheet Music</p>
             </div>
             <div className="w-10" />
           </div>
