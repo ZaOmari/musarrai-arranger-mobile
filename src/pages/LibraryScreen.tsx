@@ -126,11 +126,11 @@ const LibraryScreen = () => {
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-semibold text-gray-900 mb-2 block">
+              <label className="text-sm font-semibold text-gray-900 dark:text-white mb-2 block">
                 Instrument
               </label>
               <Select value={filterInstrument} onValueChange={setFilterInstrument}>
-                <SelectTrigger className="h-12 rounded-2xl border-gray-200 bg-gray-50">
+                <SelectTrigger className="h-12 rounded-2xl border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
@@ -143,11 +143,11 @@ const LibraryScreen = () => {
             </div>
             
             <div>
-              <label className="text-sm font-semibold text-gray-900 mb-2 block">
+              <label className="text-sm font-semibold text-gray-900 dark:text-white mb-2 block">
                 Date
               </label>
               <Select value={filterDate} onValueChange={setFilterDate}>
-                <SelectTrigger className="h-12 rounded-2xl border-gray-200 bg-gray-50">
+                <SelectTrigger className="h-12 rounded-2xl border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl">
