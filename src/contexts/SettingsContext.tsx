@@ -2,13 +2,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 type Language = 'en' | 'ru';
-type Theme = 'light' | 'dark' | 'system';
 
 interface SettingsContextType {
   language: Language;
-  theme: Theme;
   setLanguage: (language: Language) => void;
-  setTheme: (theme: Theme) => void;
   t: (key: string) => string;
 }
 
@@ -155,45 +152,17 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return (saved as Language) || 'en';
   });
 
-  const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('theme');
-    return (saved as Theme) || 'dark';
-  });
-
   const setLanguage = (newLanguage: Language) => {
     setLanguageState(newLanguage);
     localStorage.setItem('language', newLanguage);
-  };
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('theme', newTheme);
   };
 
   const t = (key: string): string => {
     return translations[language][key as keyof typeof translations['en']] || key;
   };
 
-  useEffect(() => {
-    const root = document.documentElement;
-    
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else if (theme === 'light') {
-      root.classList.remove('dark');
-    } else {
-      // system theme
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      if (mediaQuery.matches) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-    }
-  }, [theme]);
-
   return (
-    <SettingsContext.Provider value={{ language, theme, setLanguage, setTheme, t }}>
+    <SettingsContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </SettingsContext.Provider>
   );

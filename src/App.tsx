@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SettingsProvider } from "./contexts/SettingsContext";
-import ThemeWrapper from "./components/ThemeWrapper";
+
 import HomeScreen from "./pages/HomeScreen";
 import ResultScreen from "./pages/ResultScreen";
 import LibraryScreen from "./pages/LibraryScreen";
@@ -18,8 +18,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <SettingsProvider>
-      <ThemeWrapper>
-        <TooltipProvider>
+      <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -33,7 +32,6 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
-      </ThemeWrapper>
     </SettingsProvider>
   </QueryClientProvider>
 );
