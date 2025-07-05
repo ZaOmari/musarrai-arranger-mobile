@@ -20,6 +20,7 @@ const LibraryScreen = () => {
   useEffect(() => {
     // Load saved arrangements from localStorage
     const arrangements = JSON.parse(localStorage.getItem('savedArrangements') || '[]');
+    console.log('Loading arrangements in Library:', arrangements);
     setSavedArrangements(arrangements);
   }, []);
 

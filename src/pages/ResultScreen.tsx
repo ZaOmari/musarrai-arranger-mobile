@@ -30,6 +30,8 @@ const ResultScreen = () => {
     
     // Save to localStorage for now (in real app this would be saved to backend)
     const savedArrangements = JSON.parse(localStorage.getItem('savedArrangements') || '[]');
+    console.log('Current saved arrangements:', savedArrangements);
+    
     const newArrangement = {
       id: Date.now(),
       title: selectedPiece?.title || 'Untitled Piece',
@@ -42,8 +44,10 @@ const ResultScreen = () => {
       notes: notes
     };
     
+    console.log('New arrangement:', newArrangement);
     savedArrangements.unshift(newArrangement); // Add to beginning of array
     localStorage.setItem('savedArrangements', JSON.stringify(savedArrangements));
+    console.log('Arrangements after save:', savedArrangements);
     
     setIsSaving(false);
     
