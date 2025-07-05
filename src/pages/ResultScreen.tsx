@@ -36,9 +36,9 @@ const ResultScreen = () => {
       id: Date.now(),
       title: selectedPiece?.title || 'Untitled Piece',
       composer: selectedPiece?.composer || 'Unknown',
-      originalInstrument: typeof originalInstrument === 'string' ? originalInstrument : (originalInstrument?.value || 'Unknown'),
-      targetInstrument: typeof targetInstrument === 'string' ? targetInstrument : (targetInstrument?.value || 'Unknown'), 
-      skillLevel: typeof skillLevel === 'string' ? skillLevel : (skillLevel?.value || 'Beginner'),
+      originalInstrument: originalInstrument?.value || originalInstrument || 'Unknown',
+      targetInstrument: targetInstrument?.value || targetInstrument || 'Unknown', 
+      skillLevel: skillLevel?.value || skillLevel || 'Beginner',
       dateCreated: new Date().toISOString().split('T')[0],
       thumbnail: "🎼",
       notes: notes
