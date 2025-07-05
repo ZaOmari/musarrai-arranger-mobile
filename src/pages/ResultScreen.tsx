@@ -36,9 +36,9 @@ const ResultScreen = () => {
       id: Date.now(),
       title: selectedPiece?.title || 'Untitled Piece',
       composer: selectedPiece?.composer || 'Unknown',
-      originalInstrument: originalInstrument,
-      targetInstrument: targetInstrument,
-      skillLevel: skillLevel,
+      originalInstrument: typeof originalInstrument === 'string' ? originalInstrument : (originalInstrument?.value || 'Unknown'),
+      targetInstrument: typeof targetInstrument === 'string' ? targetInstrument : (targetInstrument?.value || 'Unknown'), 
+      skillLevel: typeof skillLevel === 'string' ? skillLevel : (skillLevel?.value || 'Beginner'),
       dateCreated: new Date().toISOString().split('T')[0],
       thumbnail: "🎼",
       notes: notes
@@ -68,7 +68,7 @@ const ResultScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pb-32">
+    <div className="min-h-screen bg-gray-50 pb-32">
       <ResultHeader 
         originalInstrument={originalInstrument} 
         targetInstrument={targetInstrument} 
@@ -83,7 +83,7 @@ const ResultScreen = () => {
         <NotesSection notes={notes} setNotes={setNotes} />
         
         {/* Save Arrangement Button */}
-        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
           <Button 
             onClick={handleSaveArrangement}
             disabled={isSaving}
