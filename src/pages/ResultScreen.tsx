@@ -25,6 +25,12 @@ const ResultScreen = () => {
   const handleSaveArrangement = async () => {
     setIsSaving(true);
     
+    // Debug logging
+    console.log('Debug - originalInstrument:', originalInstrument);
+    console.log('Debug - targetInstrument:', targetInstrument);
+    console.log('Debug - skillLevel:', skillLevel);
+    console.log('Debug - location.state:', location.state);
+    
     // Simulate saving process
     await new Promise(resolve => setTimeout(resolve, 1500));
     
