@@ -21,7 +21,23 @@ const LibraryScreen = () => {
     // Load saved arrangements from localStorage
     const arrangements = JSON.parse(localStorage.getItem('savedArrangements') || '[]');
     console.log('Loading arrangements in Library:', arrangements);
-    setSavedArrangements(arrangements);
+    
+    // Filter out invalid arrangements and fix broken data
+    const validArrangements = arrangements.filter(arr => {
+      return arr && arr.title && arr.composer && arr.id;
+    }).map(arr => ({
+      ...arr,
+      originalInstrument: typeof arr.originalInstrument === 'string' ? arr.originalInstrument : (arr.originalInstrument?.value || 'Unknown'),
+      targetInstrument: typeof arr.targetInstrument === 'string' ? arr.targetInstrument : (arr.targetInstrument?.value || 'Unknown'),
+      skillLevel: typeof arr.skillLevel === 'string' ? arr.skillLevel : (arr.skillLevel?.value || 'Beginner')
+    }));
+    
+    // Update localStorage with clean data
+    if (validArrangements.length !== arrangements.length) {
+      localStorage.setItem('savedArrangements', JSON.stringify(validArrangements));
+    }
+    
+    setSavedArrangements(validArrangements);
   }, []);
 
   const skillLevelColors = {
@@ -31,6 +47,9 @@ const LibraryScreen = () => {
   };
 
   const getInstrumentIcon = (instrument) => {
+    if (!instrument || typeof instrument !== 'string') {
+      return Music;
+    }
     switch (instrument.toLowerCase()) {
       case 'piano': return Piano;
       case 'violin': return Music;
@@ -45,10 +64,14 @@ const LibraryScreen = () => {
   };
 
   const filteredArrangements = savedArrangements.filter(arrangement => {
-    const matchesSearch = arrangement.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         arrangement.composer.toLowerCase().includes(searchQuery.toLowerCase());
+    const title = arrangement.title || '';
+    const composer = arrangement.composer || '';
+    const targetInstrument = arrangement.targetInstrument || '';
+    
+    const matchesSearch = title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         composer.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesInstrument = filterInstrument === 'all' || 
-                             arrangement.targetInstrument.toLowerCase() === filterInstrument;
+                             targetInstrument.toLowerCase() === filterInstrument;
     const matchesDate = filterDate === 'all' || 
                        (filterDate === 'week' && new Date(arrangement.dateCreated) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) ||
                        (filterDate === 'month' && new Date(arrangement.dateCreated) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
